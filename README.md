@@ -4,6 +4,7 @@ local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
 local autoSlap = false
+local minimized = false
 
 local function attack(target, vec)
     if target and target.Character and LP.Character:FindFirstChild("Skull_Glove") then
@@ -26,6 +27,7 @@ Main.Position = UDim2.new(0.3, 0, 0.3, 0)
 Main.Size = UDim2.new(0, 200, 0, 280)
 Main.Active = true
 Main.Draggable = true
+Main.ClipsDescendants = true
 
 local RGBStroke = Instance.new("UIStroke")
 RGBStroke.Parent = Main
@@ -49,6 +51,28 @@ Title.Font = Enum.Font.GothamBold
 local TitleCorner = Instance.new("UICorner")
 TitleCorner.CornerRadius = UDim.new(0, 8)
 TitleCorner.Parent = Title
+
+local MinBtn = Instance.new("TextButton")
+MinBtn.Name = "MinBtn"
+MinBtn.Parent = Title
+MinBtn.BackgroundTransparency = 1
+MinBtn.Position = UDim2.new(1, -30, 0, 0)
+MinBtn.Size = UDim2.new(0, 30, 1, 0)
+MinBtn.Text = "-"
+MinBtn.TextColor3 = Color3.new(1, 1, 1)
+MinBtn.TextSize = 25
+MinBtn.Font = Enum.Font.GothamBold
+
+MinBtn.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    if minimized then
+        Main:TweenSize(UDim2.new(0, 200, 0, 35), "Out", "Quad", 0.3, true)
+        MinBtn.Text = "+"
+    else
+        Main:TweenSize(UDim2.new(0, 200, 0, 280), "Out", "Quad", 0.3, true)
+        MinBtn.Text = "-"
+    end
+end)
 
 local function createButton(name, pos, color, callback)
     local btn = Instance.new("TextButton")
@@ -85,7 +109,7 @@ createButton("KILL ALL", UDim2.new(0.5, 0, 0, 95), Color3.fromRGB(120, 40, 40), 
     end
 end)
 
-createButton("TP TO ZONE", UDim2.new(0.5, 0, 0, 140), Color3.fromRGB(40, 60, 120), function()
+createButton("TP TO SLAP", UDim2.new(0.5, 0, 0, 140), Color3.fromRGB(40, 60, 120), function()
     if LP.Character and LP.Character:FindFirstChild("HumanoidRootPart") then
         LP.Character.HumanoidRootPart.CFrame = CFrame.new(-12.254, -49.0, 420.262)
     end
